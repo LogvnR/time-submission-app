@@ -1,10 +1,11 @@
 import './App.css';
+import Entry from './Components/Entry';
 
 const App = () => {
   return (
-    <div>
-      <div></div>
-    </div>
+    <>
+      <Entry />
+    </>
   );
 };
 
