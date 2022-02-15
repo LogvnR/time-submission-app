@@ -4,7 +4,7 @@ import classes from '../Styles/Entry.module.css';
 import Login from './Login';
 import SignUp from './SignUp';
 
-const Entry = () => {
+const Entry = (props) => {
   const [entry, setEntry] = useState(true);
 
   const entryViewHandler = () => {
@@ -13,8 +13,22 @@ const Entry = () => {
 
   return (
     <div className={classes.entry}>
-      {entry && <Login entryViewHandler={entryViewHandler} />}
-      {!entry && <SignUp entryViewHandler={entryViewHandler} />}
+      {entry && (
+        <Login
+          setLoginEmail={props.setLoginEmail}
+          setLoginPassword={props.setLoginPassword}
+          loginUser={props.loginUser}
+          entryViewHandler={entryViewHandler}
+        />
+      )}
+      {!entry && (
+        <SignUp
+          setSignUpEmail={props.setSignUpEmail}
+          setSignUpPassword={props.setSignUpPassword}
+          signUpUser={props.signUpUser}
+          entryViewHandler={entryViewHandler}
+        />
+      )}
     </div>
   );
 };

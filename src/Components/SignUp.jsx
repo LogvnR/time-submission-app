@@ -14,9 +14,21 @@ const SignUp = (props) => {
         <option value="0">SELECT AND OPTION</option>
         <option value="coronado">Coronado</option>
       </select>
-      <input type="email" placeholder="Email" />
-      <input type="password" placeholder="Password" />
-      <button type="submit">CREATE</button>
+      <input
+        type="email"
+        placeholder="Email"
+        onChange={(event) => {
+          props.setSignUpEmail(event.target.value);
+        }}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        onChange={(event) => {
+          props.setSignUpPassword(event.target.value);
+        }}
+      />
+      <button onClick={props.signUpUser}>CREATE</button>
       <p onClick={props.entryViewHandler}>Login</p>
     </div>
   );
