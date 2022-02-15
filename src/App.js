@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { db, auth } from './firebase';
 import { collection, onSnapshot } from 'firebase/firestore';
 import {
@@ -10,6 +11,7 @@ import {
 
 import './App.css';
 import Entry from './Components/Entry';
+import Dashboard from './Components/Dashboard';
 
 const App = () => {
   const [signUpEmail, setSignUpEmail] = useState('');
@@ -26,7 +28,9 @@ const App = () => {
     onSnapshot(collection(db, 'users'), (snapshot) => {
       console.log(snapshot.docs.map((doc) => doc.data()));
     });
-  }, []);
+  }, [user]);
+
+  const navigate = useNavigate();
 
   const signUp = async () => {
     try {
@@ -36,6 +40,7 @@ const App = () => {
         signUpPassword
       );
       console.log(user);
+      navigate('/dashboard');
     } catch (error) {
       console.log(error.message);
     }
@@ -49,6 +54,7 @@ const App = () => {
         loginPassword
       );
       console.log(user);
+      navigate('/dashboard');
     } catch (error) {
       console.log(error.message);
     }
@@ -56,21 +62,29 @@ const App = () => {
 
   const logout = async () => {
     await signOut(auth);
+    navigate('');
   };
 
   return (
-    <>
-      <Entry
-        setSignUpEmail={setSignUpEmail}
-        setSignUpPassword={setSignUpPassword}
-        setLoginEmail={setLoginEmail}
-        setLoginPassword={setLoginPassword}
-        signUpUser={signUp}
-        loginUser={login}
+    <Routes>
+      <Route
+        path=""
+        element={
+          <Entry
+            setSignUpEmail={setSignUpEmail}
+            setSignUpPassword={setSignUpPassword}
+            setLoginEmail={setLoginEmail}
+            setLoginPassword={setLoginPassword}
+            signUpUser={signUp}
+            loginUser={login}
+          />
+        }
       />
-      <p>{user?.email}</p>
-      <button onClick={logout}>logout</button>
-    </>
+      <Route
+        path="/dashboard"
+        element={<Dashboard logoutHandler={logout} userEmail={user?.email} />}
+      />
+    </Routes>
   );
 };
 
